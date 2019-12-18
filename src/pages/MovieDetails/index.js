@@ -9,6 +9,12 @@ import {
   Animated,
 } from 'react-native';
 import Header from '../../components/Header';
+import format from 'date-fns/format';
+import styles from './styles';
+
+import {connect} from 'react-redux';
+import * as AppActions from '../../store/actions/app';
+import {showImage} from '../../services/images';
 import ItemBottom from '../../components/ItemBottom';
 import WebsiteButton from '../../components/WebsiteButton';
 import BottomButtonsHolder from '../../components/BottomButtonsHolder';
@@ -17,24 +23,28 @@ import ItemExtras from '../../components/ItemExtras';
 import Popularity from '../../components/Popularity';
 import ProductionCompanies from '../../components/ProductionCompanies';
 
-import {connect} from 'react-redux';
-import * as AppActions from '../../store/actions/app';
-
-import styles from './styles';
-import {showImage} from '../../services/images';
-import format from 'date-fns/format';
-
 function MovieDetails({app: {activeItem}, loadActiveItem, navigation}) {
   useEffect(() => {
     //Function to prevent page loading if there are no active item parameters
-    if (!activeItem.title) {
-      // navigation.navigate('Home');
+    if (activeItem.title) {
+      navigation.navigate('Home');
     }
 
     return () => {
       loadActiveItem(false);
     };
   }, []);
+
+  // Animation setting for header when scrolling page
+  const HEADER_MIN_HEIGHT = 50;
+  const HEADER_MAX_HEIGHT = 180;
+  const scrollYAnimatedValue = new Animated.Value(0);
+
+  const headerHeight = scrollYAnimatedValue.interpolate({
+    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  });
 
   //Check if the Movie has a Tagline, avoinding layout errors
   const _tagline = () => {
@@ -45,7 +55,8 @@ function MovieDetails({app: {activeItem}, loadActiveItem, navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header left headerHeight={100} navigation={navigation}></Header>
+      <Header left headerHeight={headerHeight} navigation={navigation}></Header>
+
       {activeItem && activeItem.title ? (
         <>
           <ScrollView

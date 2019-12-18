@@ -1,29 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, FlatList} from 'react-native';
+import {FlatList, SafeAreaView, Animated} from 'react-native';
 import {connect} from 'react-redux';
 import * as AppActions from '../../store/actions/app';
 import styles from './styles';
-import Header from '../../components/Header';
-import ListItem from '../../components/ListItem';
 import Loading from '../../components/Loading';
+import ListItem from '../../components/ListItem';
 import api from '../../services/api';
+import Header from '../../components/Header';
 
 function Home({navigation, loadActiveItem}) {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
+
   // Loads the movie list as soon as the component is mounted
   useEffect(() => {
     load();
   }, []);
-
-  // Set clicked item as Active Movie and navegates to details page
-  const handleClick = item => {
-    loadActiveItem(item);
-    navigation.navigate('MovieDetails', {
-      item: item,
-    });
-  };
 
   const load = async () => {
     // Chek if app is not fetching results
@@ -44,11 +37,32 @@ function Home({navigation, loadActiveItem}) {
     }
   };
 
+  // Set clicked item as Active Movie and navegates to details page
+  const handleClick = item => {
+    loadActiveItem(item);
+    navigation.navigate('MovieDetails', {
+      item: item,
+    });
+  };
+
+  // Animation setting for header when scrolling page
+  const HEADER_MIN_HEIGHT = 50;
+  const HEADER_MAX_HEIGHT = 180;
+  const scrollYAnimatedValue = new Animated.Value(0);
+
+  const headerHeight = scrollYAnimatedValue.interpolate({
+    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  });
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header headerHeight={100}></Header>
-
+      <Header headerHeight={headerHeight}></Header>
       <FlatList
+        onScroll={Animated.event([
+          {nativeEvent: {contentOffset: {y: this.scrollYAnimatedValue}}},
+        ])}
         scrollEventThrottle={16}
         style={styles.list}
         data={items}
