@@ -17,6 +17,14 @@ function Home({navigation, loadActiveItem}) {
     load();
   }, []);
 
+  // Set clicked item as Active Movie and navegates to details page
+  const handleClick = item => {
+    loadActiveItem(item);
+    navigation.navigate('MovieDetails', {
+      item: item,
+    });
+  };
+
   const load = async () => {
     // Chek if app is not fetching results
     if (loading) return;
