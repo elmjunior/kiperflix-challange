@@ -32,6 +32,10 @@ Tests:
 
 [Jest](https://jestjs.io/)
 
+## APK Download
+
+[Google_Drive](https://drive.google.com/open?id=1ZVE2KN9BUHFBFT9EbMMAaBS3Cuiz9CF4)
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
