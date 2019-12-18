@@ -32,6 +32,21 @@ Tests:
 
 [Jest](https://jestjs.io/)
 
+## Instructions
+
+General:
+
+```
+yarn install
+```
+
+For iOS:
+
+```
+cd ios/
+pod install
+```
+
 ## APK Download
 
 [Google_Drive](https://drive.google.com/open?id=1ZVE2KN9BUHFBFT9EbMMAaBS3Cuiz9CF4)
