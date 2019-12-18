@@ -66,7 +66,7 @@ function Header({left, leftColor, right, navigation, headerHeight}) {
   const _image = () => (
     <Animated.Image
       source={require('../../../assets/images/logo.png')}
-      style={[styles.logo, {height: headerHeight, opacity: logoOpacity}]}
+      style={[styles.logo, {height: 80, opacity: logoOpacity}]}
       resizeMode="contain"
     />
   );
