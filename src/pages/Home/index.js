@@ -5,6 +5,7 @@ import * as AppActions from '../../store/actions/app';
 import styles from './styles';
 import Header from '../../components/Header';
 import ListItem from '../../components/ListItem';
+import Loading from '../../components/Loading';
 import api from '../../services/api';
 
 function Home({navigation, loadActiveItem}) {
@@ -38,6 +39,7 @@ function Home({navigation, loadActiveItem}) {
   return (
     <SafeAreaView style={styles.container}>
       <Header headerHeight={100}></Header>
+
       <FlatList
         scrollEventThrottle={16}
         style={styles.list}
@@ -50,6 +52,9 @@ function Home({navigation, loadActiveItem}) {
             }}></ListItem>
         )}
         numColumns={2}
+        onEndReached={load}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={Loading}
       />
     </SafeAreaView>
   );
